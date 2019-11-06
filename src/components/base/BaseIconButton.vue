@@ -8,7 +8,16 @@
 export default {
   name: 'basic-icon-button',
   props: {
-    icon: String,
+    icon: {
+      validator(val) {
+        return (
+          typeof val === 'string'
+          || (val instanceof Array
+            && val.length < 2
+            && val.every(el => typeof el === 'string'))
+        );
+      },
+    },
   },
 };
 </script>

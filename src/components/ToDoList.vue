@@ -1,22 +1,24 @@
 <template>
   <div class="todo-list">
-    <base-header :level=2></base-header>
-    <todo-list-editor></todo-list-editor>
-    <paginate
-      name="items"
-      :list="items"
-      :per="limit"
-      :refreshCurrentPage="true"
-    >
-      <todo-list-item
-        v-for="(item, indexOnPage) in paginated('items')"
-        :key="item.id"
-        :number="itemIndex(indexOnPage)"
-      >
-        <base-text value="item.header"></base-text>
-      </todo-list-item>
-    </paginate>
-    <paginate-links for="items" :limit="6" :show-step-links="true"></paginate-links>
+    <div class="todo-list-header">
+      <base-header :level="2"></base-header>
+    </div>
+    <div class="todo-list-main">
+      <todo-list-editor></todo-list-editor>
+      <paginate name="items" :list="items" :per="limit" :refreshCurrentPage="true">
+        <todo-list-item
+          v-for="(item, indexOnPage) in paginated('items')"
+          :key="item.id"
+          :number="itemIndex(indexOnPage)"
+        >
+          <base-text :value="item.header"></base-text>
+        </todo-list-item>
+      </paginate>
+      <paginate-links for="items" :limit="6" :show-step-links="true"></paginate-links>
+    </div>
+    <div class="todo-list-control">
+      <base-classic-button value="Add Card"></base-classic-button>
+    </div>
   </div>
 </template>
 
@@ -56,5 +58,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

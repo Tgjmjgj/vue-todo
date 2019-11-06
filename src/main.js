@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faUserSecret, faPen, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faClock } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import VuePaginate from 'vue-paginate';
 import App from './App.vue';
@@ -13,7 +14,7 @@ import BaseEditableDiv from '@/components/base/BaseEditableDiv.vue';
 import BaseClassicButton from '@/components/base/BaseClassicButton.vue';
 import BaseIconButton from '@/components/base/BaseIconButton.vue';
 
-library.add(faUserSecret, faTimes, faPen);
+library.add(faUserSecret, faTimes, faPen, faClock);
 
 Vue.use(VuePaginate);
 
