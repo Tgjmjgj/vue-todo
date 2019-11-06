@@ -1,6 +1,6 @@
 <template>
   <button>
-    <base-text value="value"></base-text>
+    <base-text :value="value"></base-text>
   </button>
 </template>
 
@@ -16,10 +16,12 @@ export default {
 <style scoped>
 button {
   min-width: 100px;
-  min-height: 60px;
+  min-height: 40px;
   outline: none;
   border: none;
   box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.5);
-  border-radius: 5px;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
 }
 </style>

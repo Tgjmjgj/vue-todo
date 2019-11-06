@@ -15,6 +15,8 @@ const defaultFilter = [
   ['deleted', '==', false],
 ];
 
+console.log(actions);
+
 const firestoreModule = {
   firestorePath: collectionName,
   firestoreRefType: 'collection',
@@ -28,8 +30,16 @@ const firestoreModule = {
   getters: {
     items,
   },
-  mutations,
-  actions,
+  mutations: {
+    insert: mutations.insert,
+    patch: mutations.patch,
+    markAsDeleted: mutations.markAsDeleted,
+  },
+  actions: {
+    createItem: actions.createItem,
+    updateItem: actions.updateItem,
+    deleteItem: actions.deleteItem,
+  },
 };
 
 export default firestoreModule;

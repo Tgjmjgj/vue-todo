@@ -1,6 +1,6 @@
 <template>
   <button>
-    <font-awesome-icon :icon="icon" />
+    <font-awesome-icon class="fullsize" :icon="icon" />
   </button>
 </template>
 
@@ -13,7 +13,7 @@ export default {
         return (
           typeof val === 'string'
           || (val instanceof Array
-            && val.length < 2
+            && (val.length === 1 || val.length === 2)
             && val.every(el => typeof el === 'string'))
         );
       },
@@ -24,9 +24,16 @@ export default {
 
 <style scoped>
 button {
-  min-width: 60px;
-  min-height: 60px;
+  min-width: 40px;
+  min-height: 40px;
   outline: none;
   border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.fullsize {
+  height: 100%;
+  width: 100%;
 }
 </style>

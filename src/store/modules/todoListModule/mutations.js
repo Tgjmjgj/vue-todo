@@ -1,16 +1,14 @@
 
-import { collectionName } from '@/config/firebase';
-
 function insert(state, newItem) {
-  state.dispatch(`${collectionName}/insert`, newItem);
+  this.dispatch('todoList/insert', newItem);
 }
 
 function patch(state, updatedItem) {
-  state.dispatch(`${collectionName}/patch`, updatedItem);
+  state.dispatch('todoList/patch', updatedItem);
 }
 
 function markAsDeleted(state, itemId) {
-  state.dispatch(`${collectionName}/patch`, { id: itemId, deleted: true });
+  state.dispatch('todoList/patch', { id: itemId, deleted: true });
 }
 
 export { insert, patch, markAsDeleted };
