@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 import VuexEasyFirestore from 'vuex-easy-firestore';
 
 import { Firebase, initFirebase } from '@/config/firebase';
-import firestoreModule from '@/store/modules/firestoreModule';
+import firestoreModule from '@/store/modules/todoListModule/firestoreModule';
 
 Vue.use(Vuex);
 

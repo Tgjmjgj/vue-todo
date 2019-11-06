@@ -1,6 +1,8 @@
 import * as Firebase from 'firebase/app';
 import 'firebase/firestore';
 
+const collectionName = 'todo-list';
+
 const firebaseConfig = {
   apiKey: 'AIzaSyD-mTqlhghWErRwtuaPLG1e_a0N45DGRnY',
   authDomain: 'testing-256208.firebaseapp.com',
@@ -27,4 +29,4 @@ function initFirebase() {
   });
 }
 
-export { Firebase, initFirebase };
+export { Firebase, collectionName, initFirebase };
