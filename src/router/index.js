@@ -8,6 +8,11 @@ Vue.use(VueRouter);
 
 const routes = [
   {
+    path: '/',
+    alias: '/page',
+    component: Page,
+  },
+  {
     path: '/page',
     alias: '/page/1',
     component: Page,

@@ -1,5 +1,5 @@
 <template>
-  <to-do-list></to-do-list>
+  <to-do-list :limit=2></to-do-list>
 </template>
 
 <script>

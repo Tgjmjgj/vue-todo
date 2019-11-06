@@ -1,6 +1,6 @@
 <template>
   <button>
-    <font-awesome-icon icon="icon" />
+    <font-awesome-icon :icon="icon" />
   </button>
 </template>
 

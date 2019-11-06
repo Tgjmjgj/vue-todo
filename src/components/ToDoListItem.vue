@@ -12,7 +12,7 @@ export default {
   name: 'todo-list-item',
   props: {
     number: Number,
-  }
+  },
 };
 </script>
 

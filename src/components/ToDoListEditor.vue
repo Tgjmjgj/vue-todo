@@ -1,5 +1,5 @@
 <template>
-  <base-editable-div 
+  <base-editable-div
     v-model="value"
     placeholder="placeholder"
   >
@@ -13,6 +13,10 @@ export default {
     placeholder: {
       type: String,
       default: 'Enter a title for this card...',
+    },
+    value: {
+      type: String,
+      default: '',
     },
   },
 };

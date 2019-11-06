@@ -11,7 +11,7 @@ export default {
     level: {
       type: Number,
       default: 2,
-      validator: function (val) {
+      validator(val) {
         return [1, 2, 3].indexOf(val) !== -1;
       },
     },
