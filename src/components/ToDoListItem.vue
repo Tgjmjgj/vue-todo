@@ -5,20 +5,62 @@
       <div class="content">
         <slot></slot>
       </div>
-      <base-icon-button class="icon-btn" icon="pen"></base-icon-button>
-      <base-icon-button class="icon-btn" icon="times"></base-icon-button>
+      <base-icon-button
+        class="icon-btn"
+        icon="pen"
+        @click="clickEdit"
+      ></base-icon-button>
+      <base-icon-button
+        class="icon-btn"
+        icon="times"
+        @click="clickDelete"
+      ></base-icon-button>
     </div>
     <div class="append">
-      <base-icon-button class="icon-btn" :icon="['far', 'clock']"></base-icon-button>
+      <base-icon-button
+        class="icon-btn"
+        :class="currentState"
+        :icon="stateIcon"
+        @click="clickState"
+      ></base-icon-button>
     </div>
   </li>
 </template>
 
 <script>
+
+const todoStates = {
+  waiting: ['far', 'clock'],
+  completed: ['fas', 'check'],
+};
+
 export default {
   name: 'todo-list-item',
   props: {
     number: Number,
+    currentState: {
+      type: String,
+      default: 'waiting',
+      validator(val) {
+        return Object.keys(todoStates).indexOf(val) !== -1;
+      },
+    },
+  },
+  methods: {
+    clickEdit() {
+      this.$emit('click-edit');
+    },
+    clickDelete() {
+      this.$emit('click-delete');
+    },
+    clickState() {
+      this.$emit('click-state');
+    },
+  },
+  computed: {
+    stateIcon() {
+      return todoStates[this.currentState];
+    },
   },
 };
 </script>
@@ -59,5 +101,17 @@ export default {
 .icon-btn {
   height: 1em;
   width: 1em;
+}
+.main .icon-btn {
+  visibility: hidden;
+}
+.main:hover .icon-btn {
+  visibility: visible;
+}
+.waiting {
+  background: #c3c3c3;
+}
+.completed {
+  background: #a4ffa4;
 }
 </style>

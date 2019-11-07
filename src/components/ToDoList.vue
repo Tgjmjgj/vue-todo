@@ -117,7 +117,7 @@ export default {
 <style scoped>
 
 .row {
-  height: 2em;
+  height: 2.5em;
   margin: .6em 0;
 }
 
