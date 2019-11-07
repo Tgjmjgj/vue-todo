@@ -36,6 +36,12 @@ export default {
       this.$emit('input', val);
     },
   },
+  watch: {
+    value() {
+      // Maybe there is a better way than watcher to do this?
+      this.innerText = this.value;
+    },
+  },
 };
 </script>
 

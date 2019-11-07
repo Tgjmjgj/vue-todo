@@ -2,7 +2,14 @@
 import { jsListItemToFs, equalAllListItemProperties } from '@/util/listItemUtils';
 
 function createItem({ commit }, newItem) {
-  const fsItem = jsListItemToFs(newItem);
+  const jsItem = { ...newItem };
+  if (!Object.prototype.hasOwnProperty.call(jsItem, 'deleted')) {
+    jsItem.deleted = false;
+  }
+  if (!Object.prototype.hasOwnProperty.call(jsItem, 'creationTime')) {
+    jsItem.creationTime = new Date();
+  }
+  const fsItem = jsListItemToFs(jsItem);
   commit('insert', fsItem);
 }
 

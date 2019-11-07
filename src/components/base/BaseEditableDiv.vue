@@ -1,7 +1,7 @@
 <template>
   <div
     contenteditable="true"
-    :innerText="value"
+    :innerText.prop="value"
     @input="$emit('input', $event.target.innerText)"
     data-placeholder="placeholder"
   />

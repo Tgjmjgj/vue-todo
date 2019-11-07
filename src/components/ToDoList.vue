@@ -67,8 +67,6 @@ export default {
       this.$store.dispatch('todoList/createItem', {
         header: this.editorInput,
         content: '{empty}',
-        deleted: false,
-        creationTime: new Date(),
       });
       this.editorInput = '';
     },
