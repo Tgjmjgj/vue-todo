@@ -22,6 +22,7 @@
           v-for="(item, indexOnPage) in paginated('items')"
           :key="item.id"
           :number="itemIndex(indexOnPage)"
+          class="row"
         >
           <base-text :value="item.header"></base-text>
         </todo-list-item>
@@ -115,6 +116,11 @@ export default {
 
 <style scoped>
 
+.row {
+  height: 2em;
+  margin: .6em 0;
+}
+
 .todo-list-control {
   display: flex;
   flex-flow: column;
@@ -141,6 +147,10 @@ ul.paginate-links > li {
   background: #fff;
   margin: 0.2em;
   box-shadow: 0 1px 2px #666;
+}
+
+ul.paginate-links > li.active {
+  background: #ff56;
 }
 
 ul.paginate-links > li:first-child {

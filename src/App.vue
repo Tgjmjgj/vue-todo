@@ -12,8 +12,7 @@
   text-align: center;
   color: #2c3e50;
   background: #fff url("~@/assets/img/wood-planks.jpg") repeat left top;
-  height: 100%;
-  width: 100%;
+  background-size: cover;
 }
 
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <to-do-list :limit=2 class="todo-list"></to-do-list>
+    <to-do-list class="todo-list"></to-do-list>
   </div>
 </template>
 

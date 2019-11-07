@@ -1,5 +1,5 @@
 <template>
-  <li class="row">
+  <li class="item">
     <div class="main">
       <span v-if="number" class="num"> {{ number }} </span>
       <div class="content">
@@ -25,23 +25,27 @@ export default {
 
 <style scoped>
 
-.row {
+.item {
   box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 4em;
   background: #fff;
-  margin: 1em 0;
   box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.5);
   border-radius: 8px;
 }
-.row:hover {
+.item:hover {
   background: #f5f6f7;
 }
-.main {
+.item > div {
   display: flex;
-  width: 100%;
+  height: 100%;
+}
+.main {
+  flex: 1;
+}
+.append {
+  width: 60px;
 }
 .num {
   display: inline-block;
@@ -53,7 +57,7 @@ export default {
   flex: 1;
 }
 .icon-btn {
-  height: 4em;
-  width: 4em;
+  height: 1em;
+  width: 1em;
 }
 </style>
