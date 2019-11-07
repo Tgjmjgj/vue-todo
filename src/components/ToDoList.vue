@@ -21,11 +21,10 @@
         <todo-list-item
           v-for="(item, indexOnPage) in paginated('items')"
           :key="item.id"
-          :item=item
           :number="itemIndex(indexOnPage)"
           :currentState="item.completionTime ? 'completed' : 'waiting'"
           @click-delete="deleteCard"
-          @click-state="changeCardStatus"
+          @click-state="changeCardStatus(item)"
           class="row"
         >
           <base-text :value="item.header"></base-text>
@@ -113,8 +112,10 @@ export default {
     deleteCard() {
       console.log('delete');
     },
-    changeCardStatus() {
-      console.log('status');
+    changeCardStatus(item) {
+      const updItem = { ...item };
+      updItem.completionTime = (item.completionTime ? null : new Date());
+      this.$store.dispatch('todoList/updateItem', updItem);
     },
   },
   components: {

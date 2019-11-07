@@ -1,16 +1,11 @@
 
-import { jsListItemToFs, equalAllListItemProperties } from '@/util/listItemUtils';
+import equalAllListItemProperties from '@/util/listItemUtils';
 
 function createItem({ commit }, newItem) {
-  const jsItem = { ...newItem };
-  if (!Object.prototype.hasOwnProperty.call(jsItem, 'deleted')) {
-    jsItem.deleted = false;
-  }
-  if (!Object.prototype.hasOwnProperty.call(jsItem, 'creationTime')) {
-    jsItem.creationTime = new Date();
-  }
-  const fsItem = jsListItemToFs(jsItem);
-  commit('insert', fsItem);
+  const item = { ...newItem };
+  item.deleted = item.deleted || false;
+  item.creationTime = item.creationTime || new Date();
+  commit('insert', item);
 }
 
 function itemExists(state, itemId) {
@@ -23,8 +18,7 @@ function updateItem({ commit, state }, updatedItem) {
     return;
   }
   const original = state.data[updatedItem.id];
-  const fsItem = jsListItemToFs(updatedItem);
-  if (!equalAllListItemProperties(fsItem, original)) {
+  if (!equalAllListItemProperties(updatedItem, original)) {
     commit('patch', updatedItem);
   }
 }

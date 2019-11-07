@@ -4,11 +4,11 @@ function insert(state, newItem) {
 }
 
 function patch(state, updatedItem) {
-  state.dispatch('todoList/patch', updatedItem);
+  this.dispatch('todoList/patch', updatedItem);
 }
 
 function markAsDeleted(state, itemId) {
-  state.dispatch('todoList/patch', { id: itemId, deleted: true });
+  this.dispatch('todoList/patch', { id: itemId, deleted: true });
 }
 
 export { insert, patch, markAsDeleted };

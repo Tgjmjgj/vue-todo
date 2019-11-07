@@ -23,6 +23,13 @@ const firestoreModule = {
   namespaced: true,
   sync: {
     where: defaultFilter,
+    guard: ['created_at', 'created_by'],
+  },
+  serverChange: {
+    convertTimestamps: {
+      creationTime: '%convertTimestamp%',
+      completionTime: '%convertTimestamp%',
+    },
   },
   state: {}, // see the comment on the top
   getters: {
