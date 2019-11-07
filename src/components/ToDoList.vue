@@ -9,7 +9,9 @@
     </div>
     <div class="todo-list-main">
       <todo-list-editor v-model="editorInput"></todo-list-editor>
+      <div class="loader" v-if="!itemsLoaded"></div>
       <paginate
+        v-else
         ref="paginator"
         name="items"
         :list="items"
@@ -27,6 +29,7 @@
     </div>
     <div class="todo-list-control">
       <paginate-links
+        v-if="itemsLoaded"
         for="items"
         :limit="6"
         :show-step-links="true"
@@ -43,7 +46,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import ToDoListItem from '@/components/ToDoListItem.vue';
 import ToDoListEditor from '@/components/ToDoListEditor.vue';
 
@@ -51,8 +53,10 @@ export default {
   name: 'todo-list',
   data() {
     return {
+      items: [],
       paginate: ['items'],
       editorInput: '',
+      itemsLoaded: true,
     };
   },
   props: {
@@ -61,10 +65,18 @@ export default {
       default: 10,
     },
   },
-  computed: {
-    ...mapGetters({
-      items: 'todoList/items',
-    }),
+  mounted() {
+    this.$store.state.loading.then(() => {
+      const itms = this.$store.getters['todoList/items'];
+      this.items.push(...itms);
+      // Should executes after full list have rendered in the component
+      const n = parseInt(this.$route.params.n, 10);
+      if (Number.isInteger(n) && n > 0 && n <= this.$refs.paginator.lastPage) {
+        this.$refs.paginator.goToPage(n);
+      } else {
+        this.$refs.paginator.goToPage(1);
+      }
+    });
   },
   methods: {
     itemIndex(indexOnPage) {
@@ -76,11 +88,11 @@ export default {
     },
     onPageChange(to) {
       // Using raw history api instead of vue-router api.
+      // this.$router.replace({ path: `/page/${to}` });
       // We don't actually need any actions from router (like extra component re-rendering)
       // because a paginator has already made all changes in the displayed list
       // eslint-disable-next-line no-restricted-globals
-      history.replaceState({}, '', `/page/${to}`);
-      // this.$router.replace({ path: `/page/${to}` });
+      history.replaceState({}, '', `/#/page/${to}`);
     },
     addCard() {
       if (this.editorInput !== '') {
@@ -91,10 +103,6 @@ export default {
         this.editorInput = '';
       }
     },
-  },
-  mounted() {
-    const { n } = this.$route.params;
-    this.$refs.paginator.goToPage(n);
   },
   components: {
     'todo-list-editor': ToDoListEditor,

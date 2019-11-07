@@ -15,8 +15,6 @@ const defaultFilter = [
   ['deleted', '==', false],
 ];
 
-console.log(actions);
-
 const firestoreModule = {
   firestorePath: collectionName,
   firestoreRefType: 'collection',
