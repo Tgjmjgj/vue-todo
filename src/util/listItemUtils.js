@@ -9,6 +9,10 @@ interface JsListItem {
 }
 */
 
+function itemExists(data, itemId) {
+  return Object.prototype.hasOwnProperty.call(data, itemId);
+}
+
 /**
  * Compare for equality all keys and values in the `properties` object
  * to the properties of `original` object
@@ -37,4 +41,4 @@ function equalAllListItemProperties(properties, original) {
   return true;
 }
 
-export default equalAllListItemProperties;
+export { itemExists, equalAllListItemProperties };

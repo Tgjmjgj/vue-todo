@@ -23,7 +23,7 @@
           :key="item.id"
           :number="itemIndex(indexOnPage)"
           :currentState="item.completionTime ? 'completed' : 'waiting'"
-          @click-delete="deleteCard"
+          @click-delete="deleteCard(item.id)"
           @click-state="changeCardStatus(item)"
           class="row"
         >
@@ -109,8 +109,8 @@ export default {
         this.$refs.paginator.goToPage(1);
       }
     },
-    deleteCard() {
-      console.log('delete');
+    deleteCard(itemId) {
+      this.$store.dispatch('todoList/deleteItem', itemId);
     },
     changeCardStatus(item) {
       const updItem = { ...item };

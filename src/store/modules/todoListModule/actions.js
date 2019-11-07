@@ -1,5 +1,5 @@
 
-import equalAllListItemProperties from '@/util/listItemUtils';
+import { itemExists, equalAllListItemProperties } from '@/util/listItemUtils';
 
 function createItem({ commit }, newItem) {
   const item = { ...newItem };
@@ -8,12 +8,9 @@ function createItem({ commit }, newItem) {
   commit('insert', item);
 }
 
-function itemExists(state, itemId) {
-  return Object.prototype.hasOwnProperty.call(state.data, itemId);
-}
-
 function updateItem({ commit, state }, updatedItem) {
-  if (!itemExists(state, updatedItem.id)) {
+  console.log(state);
+  if (!itemExists(state.data, updatedItem.id)) {
     console.error('Attempt to update item that doesn\'t exists!');
     return;
   }
@@ -24,6 +21,7 @@ function updateItem({ commit, state }, updatedItem) {
 }
 
 function deleteItem({ commit, state }, itemId) {
+  console.log(state);
   if (!itemExists(state.data, itemId)) {
     console.error('Attempt to delete item that doesn\'t exists!');
     return;
