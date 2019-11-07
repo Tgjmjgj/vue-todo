@@ -1,7 +1,8 @@
 <template>
   <base-editable-div
-    v-model="data"
-    placeholder="placeholder"
+    :value="innerText"
+    @input="onInput"
+    :placeholder="placeholder"
     class="input"
   >
   </base-editable-div>
@@ -10,14 +11,29 @@
 <script>
 export default {
   name: 'todo-list-editor',
+  model: {
+    prop: 'value',
+    event: 'input',
+  },
+  data() {
+    return {
+      innerText: '',
+    };
+  },
   props: {
     placeholder: {
       type: String,
       default: 'Enter a title for this card...',
     },
-    data: {
+    value: {
       type: String,
       default: '',
+    },
+  },
+  methods: {
+    onInput(val) {
+      this.innerText = val;
+      this.$emit('input', val);
     },
   },
 };

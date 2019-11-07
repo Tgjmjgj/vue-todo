@@ -2,7 +2,8 @@
 import { jsListItemToFs, equalAllListItemProperties } from '@/util/listItemUtils';
 
 function createItem({ commit }, newItem) {
-  commit('insert', newItem);
+  const fsItem = jsListItemToFs(newItem);
+  commit('insert', fsItem);
 }
 
 function itemExists(state, itemId) {

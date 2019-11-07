@@ -8,7 +8,7 @@
       </base-header>
     </div>
     <div class="todo-list-main">
-      <todo-list-editor :data="editorInput" v-model="editorInput"></todo-list-editor>
+      <todo-list-editor v-model="editorInput"></todo-list-editor>
       <paginate name="items" :list="items" :per="limit" :refreshCurrentPage="true">
         <todo-list-item
           v-for="(item, indexOnPage) in paginated('items')"
@@ -58,6 +58,10 @@ export default {
   methods: {
     itemIndex(indexOnPage) {
       return this.paginate.items.page * this.limit + indexOnPage + 1;
+    },
+    recieveInput(val) {
+      console.log(val);
+      this.editorInput = val;
     },
     addCard() {
       this.$store.dispatch('todoList/createItem', {

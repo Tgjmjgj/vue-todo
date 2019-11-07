@@ -1,8 +1,8 @@
 <template>
-  <p
-    ref="editable"
+  <div
     contenteditable="true"
-    v-on="listeners"
+    :innerText="value"
+    @input="$emit('input', $event.target.innerText)"
     data-placeholder="placeholder"
   />
 </template>
@@ -10,6 +10,10 @@
 <script>
 export default {
   name: 'base-editable-div',
+  model: {
+    prop: 'value',
+    event: 'input',
+  },
   props: {
     value: {
       type: String,
@@ -17,26 +21,14 @@ export default {
     },
     placeholder: {
       type: String,
-    },
-  },
-  computed: {
-    listeners() {
-      return { ...this.$listeners, input: this.onInput };
-    },
-  },
-  mounted() {
-    this.$refs.editable.innerText = this.value;
-  },
-  methods: {
-    onInput(e) {
-      this.$emit('input', e.target.innerText);
+      default: '',
     },
   },
 };
 </script>
 
 <style scoped>
-[contentEditable=true]:empty:not(:focus):before {
+[contentEditable=true]:empty:before {
   content: attr(data-placeholder);
   color: grey;
   font-style: italic;
