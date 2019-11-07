@@ -2,9 +2,11 @@
 import { fsListItemToJs } from '@/util/listItemUtils';
 
 function items(state) {
-  return Object.entries(state.data)
+  const cards = Object.entries(state.data)
     .map(([itemId, item]) => fsListItemToJs(itemId, item))
-    .sort((item1, item2) => item1.creationDate > item2.creationDate);
+    .sort((item1, item2) => (item1.creationTime < item2.creationTime ? 1 : -1));
+  console.log(cards);
+  return cards;
 }
 
 export default items;

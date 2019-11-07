@@ -1,7 +1,7 @@
 <template>
   <div
+    ref="editable"
     contenteditable="true"
-    :innerText.prop="value"
     @input="$emit('input', $event.target.innerText)"
     data-placeholder="placeholder"
   />
@@ -24,6 +24,13 @@ export default {
       default: '',
     },
   },
+  watch: {
+    value() {
+      if (this.value !== this.$refs.editable.innerText) {
+        this.$refs.editable.innerText = this.value;
+      }
+    },
+  },
 };
 </script>
 
@@ -32,5 +39,8 @@ export default {
   content: attr(data-placeholder);
   color: grey;
   font-style: italic;
+}
+div {
+  outline: none;
 }
 </style>

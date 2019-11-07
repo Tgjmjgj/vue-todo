@@ -9,7 +9,13 @@
     </div>
     <div class="todo-list-main">
       <todo-list-editor v-model="editorInput"></todo-list-editor>
-      <paginate name="items" :list="items" :per="limit" :refreshCurrentPage="true">
+      <paginate
+        ref="paginator"
+        name="items"
+        :list="items"
+        :per="limit"
+        :refreshCurrentPage="true"
+      >
         <todo-list-item
           v-for="(item, indexOnPage) in paginated('items')"
           :key="item.id"
@@ -20,7 +26,12 @@
       </paginate>
     </div>
     <div class="todo-list-control">
-      <paginate-links for="items" :limit="6" :show-step-links="true"></paginate-links>
+      <paginate-links
+        for="items"
+        :limit="6"
+        :show-step-links="true"
+        @change="onPageChange"
+      ></paginate-links>
       <div class="buttons" @click="addCard">
         <base-classic-button
           value="Add Card"
@@ -57,19 +68,33 @@ export default {
   },
   methods: {
     itemIndex(indexOnPage) {
-      return this.paginate.items.page * this.limit + indexOnPage + 1;
+      return this.$refs.paginator.currentPage * this.limit + indexOnPage + 1;
     },
     recieveInput(val) {
       console.log(val);
       this.editorInput = val;
     },
-    addCard() {
-      this.$store.dispatch('todoList/createItem', {
-        header: this.editorInput,
-        content: '{empty}',
-      });
-      this.editorInput = '';
+    onPageChange(to) {
+      // Using raw history api instead of vue-router api.
+      // We don't actually need any actions from router (like extra component re-rendering)
+      // because a paginator has already made all changes in the displayed list
+      // eslint-disable-next-line no-restricted-globals
+      history.replaceState({}, '', `/page/${to}`);
+      // this.$router.replace({ path: `/page/${to}` });
     },
+    addCard() {
+      if (this.editorInput !== '') {
+        this.$store.dispatch('todoList/createItem', {
+          header: this.editorInput,
+          content: '{empty}',
+        });
+        this.editorInput = '';
+      }
+    },
+  },
+  mounted() {
+    const { n } = this.$route.params;
+    this.$refs.paginator.goToPage(n);
   },
   components: {
     'todo-list-editor': ToDoListEditor,
@@ -103,8 +128,6 @@ ul.paginate-links > li {
   display: block;
   user-select: none;
   cursor: pointer;
-  height: 2em;
-  width: 2em;
   background: #fff;
   margin: 0.2em;
   box-shadow: 0 1px 2px #666;
@@ -118,6 +141,13 @@ ul.paginate-links > li:first-child {
 ul.paginate-links > li:last-child {
   border-radius: 0 8px 8px 0;
   box-shadow: -2px 1px 2px #666;
+}
+
+ul.paginate-links a {
+  display: block;
+  height: 2em;
+  width: 2em;
+  line-height: 2em;
 }
 
 </style>
