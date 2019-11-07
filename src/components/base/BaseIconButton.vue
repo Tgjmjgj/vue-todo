@@ -1,5 +1,5 @@
 <template>
-  <button>
+  <button v-on="$listeners">
     <font-awesome-icon class="fullsize" :icon="icon" />
   </button>
 </template>

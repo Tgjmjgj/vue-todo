@@ -21,7 +21,11 @@
         <todo-list-item
           v-for="(item, indexOnPage) in paginated('items')"
           :key="item.id"
+          :item=item
           :number="itemIndex(indexOnPage)"
+          :currentState="item.completionTime ? 'completed' : 'waiting'"
+          @click-delete="deleteCard"
+          @click-state="changeCardStatus"
           class="row"
         >
           <base-text :value="item.header"></base-text>
@@ -105,6 +109,12 @@ export default {
         this.editorInput = '';
         this.$refs.paginator.goToPage(1);
       }
+    },
+    deleteCard() {
+      console.log('delete');
+    },
+    changeCardStatus() {
+      console.log('status');
     },
   },
   components: {

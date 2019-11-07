@@ -2,7 +2,7 @@
   <div
     ref="editable"
     contenteditable="true"
-    @input="$emit('input', $event.target.innerText)"
+    v-on="allListeners"
     data-placeholder="placeholder"
   />
 </template>
@@ -29,6 +29,19 @@ export default {
       if (this.value !== this.$refs.editable.innerText) {
         this.$refs.editable.innerText = this.value;
       }
+    },
+  },
+  computed: {
+    allListeners() {
+      const self = this;
+      // to work with native event-listeners
+      return Object.assign({},
+        this.$listeners,
+        {
+          input(e) {
+            self.$emit('input', e.target.innerText);
+          },
+        });
     },
   },
 };

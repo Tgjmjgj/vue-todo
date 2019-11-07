@@ -1,5 +1,5 @@
 <template>
-  <li class="item">
+  <li ref="refItem" class="item">
     <div class="main">
       <span v-if="number" class="num"> {{ number }} </span>
       <div class="content">
@@ -45,6 +45,7 @@ export default {
         return Object.keys(todoStates).indexOf(val) !== -1;
       },
     },
+    item: Object,
   },
   methods: {
     clickEdit() {

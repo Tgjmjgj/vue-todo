@@ -1,7 +1,7 @@
 <template>
-  <h1 v-if="level==1"> {{ value }} </h1>
-  <h2 v-else-if="level==2"> {{ value }} </h2>
-  <h3 v-else> {{ value }} </h3>
+  <h1 v-if="level==1" v-on="$listeners"> {{ value }} </h1>
+  <h2 v-else-if="level==2" v-on="$listeners"> {{ value }} </h2>
+  <h3 v-else v-on="$listeners"> {{ value }} </h3>
 </template>
 
 <script>

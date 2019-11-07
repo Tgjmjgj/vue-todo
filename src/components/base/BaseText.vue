@@ -1,5 +1,5 @@
 <template>
-  <p>{{ value }}</p>
+  <p @v-on="$listeners"> {{ value }} </p>
 </template>
 
 <script>
