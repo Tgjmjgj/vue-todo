@@ -53,7 +53,6 @@ export default {
   name: 'todo-list',
   data() {
     return {
-      items: [],
       paginate: ['items'],
       editorInput: '',
       itemsLoaded: true,
@@ -67,8 +66,6 @@ export default {
   },
   mounted() {
     this.$store.state.loading.then(() => {
-      const itms = this.$store.getters['todoList/items'];
-      this.items.push(...itms);
       // Should executes after full list have rendered in the component
       const n = parseInt(this.$route.params.n, 10);
       if (Number.isInteger(n) && n > 0 && n <= this.$refs.paginator.lastPage) {
@@ -78,12 +75,16 @@ export default {
       }
     });
   },
+  computed: {
+    items() {
+      return this.$store.getters['todoList/items'];
+    },
+  },
   methods: {
     itemIndex(indexOnPage) {
       return this.$refs.paginator.currentPage * this.limit + indexOnPage + 1;
     },
     recieveInput(val) {
-      console.log(val);
       this.editorInput = val;
     },
     onPageChange(to) {
@@ -101,6 +102,7 @@ export default {
           content: '{empty}',
         });
         this.editorInput = '';
+        this.$refs.paginator.goToPage(1);
       }
     },
   },
