@@ -9,7 +9,6 @@ function createItem({ commit }, newItem) {
 }
 
 function updateItem({ commit, state }, updatedItem) {
-  console.log(state);
   if (!itemExists(state.data, updatedItem.id)) {
     console.error('Attempt to update item that doesn\'t exists!');
     return;
@@ -21,7 +20,6 @@ function updateItem({ commit, state }, updatedItem) {
 }
 
 function deleteItem({ commit, state }, itemId) {
-  console.log(state);
   if (!itemExists(state.data, itemId)) {
     console.error('Attempt to delete item that doesn\'t exists!');
     return;

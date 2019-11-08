@@ -3,7 +3,7 @@
     ref="editable"
     contenteditable="true"
     v-on="allListeners"
-    data-placeholder="placeholder"
+    :data-placeholder="placeholder"
   />
 </template>
 

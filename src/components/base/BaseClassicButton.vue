@@ -1,5 +1,5 @@
 <template>
-  <button :v-on="$listeners">
+  <button v-on="$listeners">
     <base-text :value="value"></base-text>
   </button>
 </template>

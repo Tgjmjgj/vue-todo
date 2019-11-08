@@ -23,6 +23,7 @@
           :key="item.id"
           :number="itemIndex(indexOnPage)"
           :currentState="item.completionTime ? 'completed' : 'waiting'"
+          @click-edit="editCard(item.id)"
           @click-delete="deleteCard(item.id)"
           @click-state="changeCardStatus(item)"
           class="row"
@@ -39,8 +40,9 @@
         :show-step-links="true"
         @change="onPageChange"
       ></paginate-links>
-      <div class="buttons" @click="addCard">
+      <div class="buttons">
         <base-classic-button
+          @click="addCard"
           value="Add Card"
         >
         </base-classic-button>
@@ -109,13 +111,16 @@ export default {
         this.$refs.paginator.goToPage(1);
       }
     },
-    deleteCard(itemId) {
-      this.$store.dispatch('todoList/deleteItem', itemId);
-    },
     changeCardStatus(item) {
       const updItem = { ...item };
       updItem.completionTime = (item.completionTime ? null : new Date());
       this.$store.dispatch('todoList/updateItem', updItem);
+    },
+    deleteCard(itemId) {
+      this.$store.dispatch('todoList/deleteItem', itemId);
+    },
+    editCard(itemId) {
+      this.$router.push({ path: `/edit/${itemId}` });
     },
   },
   components: {
