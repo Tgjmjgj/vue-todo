@@ -9,6 +9,7 @@ import {
 import { faClock } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import VuePaginate from 'vue-paginate';
+import vuetify from './plugins/vuetify';
 import App from './App.vue';
 import router from './router';
 import store from './store';
@@ -36,5 +37,6 @@ Vue.component('base-icon-button', BaseIconButton);
 new Vue({
   router,
   store,
+  vuetify,
   render: h => h(App),
 }).$mount('#app');
