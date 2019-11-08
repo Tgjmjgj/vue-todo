@@ -19,7 +19,6 @@ export default {
   },
   methods: {
     getOut() {
-      console.log(this.prevRoute);
       if (this.prevRoute) {
         this.$router.push({ path: this.prevRoute.path });
       } else {

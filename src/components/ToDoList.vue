@@ -7,11 +7,19 @@
       >
       </base-header>
     </div>
-    <div class="todo-list-main">
+    <div class="loader-cont" v-if="!isLoaded">
+      <bar-loader
+        class="loader"
+        :loading="true"
+        color="#7B3E19"
+        :width="140"
+        :height="10"
+        sizeUnit="px"
+      ></bar-loader>
+    </div>
+    <div class="todo-list-main" v-else>
       <todo-list-editor v-model="editorInput"></todo-list-editor>
-      <div class="loader" v-if="!itemsLoaded"></div>
       <paginate
-        v-else
         ref="paginator"
         name="items"
         :list="items"
@@ -34,7 +42,7 @@
     </div>
     <div class="todo-list-control">
       <paginate-links
-        v-if="itemsLoaded"
+        v-if="isLoaded"
         for="items"
         :limit="6"
         :show-step-links="true"
@@ -42,6 +50,7 @@
       ></paginate-links>
       <div class="buttons">
         <base-classic-button
+          :class="isLoaded ? 'active' : 'blocked'"
           @click="addCard"
           value="Add Card"
         >
@@ -52,6 +61,7 @@
 </template>
 
 <script>
+import { BarLoader } from '@saeris/vue-spinners';
 import ToDoListItem from '@/components/ToDoListItem.vue';
 import ToDoListEditor from '@/components/ToDoListEditor.vue';
 import {
@@ -60,14 +70,19 @@ import {
   ITEM_UPDATE,
   ITEM_DELETE,
 } from '@/store/names';
+import throttleIf from '@/util/dev/throttle';
 
 export default {
   name: 'todo-list',
+  components: {
+    'bar-loader': BarLoader,
+    'todo-list-editor': ToDoListEditor,
+    'todo-list-item': ToDoListItem,
+  },
   data() {
     return {
       paginate: ['items'],
       editorInput: '',
-      itemsLoaded: true,
     };
   },
   props: {
@@ -77,19 +92,24 @@ export default {
     },
   },
   mounted() {
-    this.$store.getters.dataLoaded.then(() => {
-      // Should executes after full list have rendered in the component
-      const n = parseInt(this.$route.params.n, 10);
-      if (Number.isInteger(n) && n > 0 && n <= this.$refs.paginator.lastPage) {
-        this.$refs.paginator.goToPage(n);
-      } else {
-        this.$refs.paginator.goToPage(1);
-      }
-    });
+    throttleIf(!this.$store.getters.isLoaded)
+      .then(() => this.$store.dispatch('waitItemsLoading'))
+      .then(() => {
+        // Should executes after full list have rendered in the component
+        const n = parseInt(this.$route.params.n, 10);
+        if (Number.isInteger(n) && n > 0 && n <= this.$refs.paginator.lastPage) {
+          this.$refs.paginator.goToPage(n);
+        } else {
+          this.$refs.paginator.goToPage(1);
+        }
+      });
   },
   computed: {
     items() {
       return this.$store.getters[pathto('items')];
+    },
+    isLoaded() {
+      return this.$store.getters.isLoaded;
     },
   },
   methods: {
@@ -107,13 +127,15 @@ export default {
       }
     },
     addCard() {
-      if (this.editorInput !== '') {
-        this.$store.dispatch(pathto(ITEM_CREATE), {
-          header: this.editorInput,
-          content: '{empty}',
-        });
-        this.editorInput = '';
-        this.$refs.paginator.goToPage(1);
+      if (this.itemsLoaded) {
+        if (this.editorInput !== '') {
+          this.$store.dispatch(pathto(ITEM_CREATE), {
+            header: this.editorInput,
+            content: '{empty}',
+          });
+          this.editorInput = '';
+          this.$refs.paginator.goToPage(1);
+        }
       }
     },
     changeCardStatus(item) {
@@ -128,30 +150,40 @@ export default {
       this.$router.push({ path: `/edit/${itemId}` });
     },
   },
-  components: {
-    'todo-list-editor': ToDoListEditor,
-    'todo-list-item': ToDoListItem,
-  },
 };
 </script>
 
 <style scoped>
-
 .row {
   height: 2.5em;
   margin: .6em 0;
 }
-
+.loader-cont {
+  height: 20em;
+  display: flex;
+  justify-content: center;
+}
+.loader {
+  margin-top: 6em;
+}
 .todo-list-control {
   display: flex;
   flex-flow: column;
 }
-
 .todo-list-control > .buttons {
   display: flex;
   justify-content: flex-start;
 }
-
+.active {
+  cursor: pointer;
+  background-color: #F5CE67;
+  transition: background-color 1s ease-out;
+}
+.blocked {
+  cursor: default;
+  background-color: #d6d5d1;
+  transition: background-color 1s ease-out;
+}
 </style>
 
 <style>
@@ -169,26 +201,21 @@ ul.paginate-links > li {
   margin: 0.2em;
   box-shadow: 0 1px 2px #666;
 }
-
 ul.paginate-links > li.active {
   background: #ff56;
 }
-
 ul.paginate-links > li:first-child {
   border-radius: 8px 0 0 8px;
   box-shadow: 2px 1px 2px #666;
 }
-
 ul.paginate-links > li:last-child {
   border-radius: 0 8px 8px 0;
   box-shadow: -2px 1px 2px #666;
 }
-
 ul.paginate-links a {
   display: block;
   height: 2em;
   width: 2em;
   line-height: 2em;
 }
-
 </style>

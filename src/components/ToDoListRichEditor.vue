@@ -34,10 +34,8 @@
 </template>
 
 <script>
-import {
-  pathto,
-  ITEM_UPDATE,
-} from '@/store/names';
+import { pathto, ITEM_UPDATE } from '@/store/names';
+import throttleIf from '@/util/dev/throttle';
 
 export default {
   name: 'todo-list-rich-editor',
@@ -67,16 +65,18 @@ export default {
     },
   },
   mounted() {
-    this.$store.getters.dataLoaded.then(() => {
-      const itemId = this.$route.params.id;
-      const potentialItem = this.items.find(item => item.id === itemId);
-      if (potentialItem) {
-        this.header = potentialItem.header;
-        this.content = potentialItem.content;
-      } else {
-        this.$router.replace({ path: '/page' });
-      }
-    });
+    throttleIf(!this.$store.getters.isLoaded)
+      .then(() => this.$store.dispatch('waitItemsLoading'))
+      .then(() => {
+        const itemId = this.$route.params.id;
+        const potentialItem = this.items.find(item => item.id === itemId);
+        if (potentialItem) {
+          this.header = potentialItem.header;
+          this.content = potentialItem.content;
+        } else {
+          this.$router.replace({ path: '/page' });
+        }
+      });
   },
 };
 </script>

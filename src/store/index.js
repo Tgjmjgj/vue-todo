@@ -13,25 +13,40 @@ const easyFirestore = VuexEasyFirestore(
   { logging: true, FirebaseDependency: Firebase },
 );
 
+let loading = null;
+
 const store = new Vuex.Store({
   plugins: [
     easyFirestore,
   ],
   modules: {},
   state: {
-    loading: null,
+    isLoaded: false,
   },
-  mutations: {},
-  actions: {},
+  mutations: {
+    load(state) {
+      state.isLoaded = true;
+    },
+  },
+  actions: {
+    waitItemsLoading({ commit }) {
+      return new Promise((resolve) => {
+        loading.then(() => {
+          commit('load');
+          resolve();
+        });
+      });
+    },
+  },
   getters: {
-    dataLoaded(state) {
-      return state.loading;
+    isLoaded(state) {
+      return state.isLoaded;
     },
   },
 });
 
 // Load all data from Firestore to the local Vuex store and activate synchronization
-store.state.loading = initFirebase()
+loading = initFirebase()
   .then(() => store.dispatch(`${MODULE_NAME}/openDBChannel`))
   .catch(err => console.log(`Cannot initialize Firebase! Error: ${err}`));
 
