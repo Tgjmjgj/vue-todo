@@ -94,12 +94,11 @@ export default {
       this.editorInput = val;
     },
     onPageChange(to) {
-      // Using raw history api instead of vue-router api.
-      // this.$router.replace({ path: `/page/${to}` });
-      // We don't actually need any actions from router (like extra component re-rendering)
-      // because a paginator has already made all changes in the displayed list
-      // eslint-disable-next-line no-restricted-globals
-      history.replaceState({}, '', `/#/page/${to}`);
+      const newPath = `/page/${to}`;
+      if (newPath !== this.$route.path) {
+        // sometime potentially unnecessary action?
+        this.$router.replace({ path: newPath });
+      }
     },
     addCard() {
       if (this.editorInput !== '') {
