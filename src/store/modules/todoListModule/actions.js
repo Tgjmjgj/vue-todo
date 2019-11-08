@@ -10,7 +10,7 @@ function createItem({ commit }, newItem) {
   const item = { ...newItem };
   item.deleted = item.deleted || false;
   item.creationTime = item.creationTime || new Date();
-  commit([ITEM_CREATE], item);
+  commit(ITEM_CREATE, item);
 }
 
 function updateItem({ commit, state }, updatedItem) {

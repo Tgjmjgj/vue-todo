@@ -27,7 +27,6 @@ export default {
     },
   },
   beforeRouteEnter(to, from, next) {
-    console.log(from);
     next((vm) => {
       if (to.name === 'edit') {
         // eslint-disable-next-line no-param-reassign
@@ -47,7 +46,6 @@ export default {
   justify-content: center;
   min-height: 100vh;
 }
-
 .editor {
   box-sizing: border-box;
   width: 800px;
@@ -56,13 +54,11 @@ export default {
   border-radius: 8px;
   padding: 1em;
 }
-
 @media (max-width: 1000px) {
   .editor {
     width: 80%;
   }
 }
-
 @media (max-width: 700px) {
   .editor {
     width: calc(700px * 0.8);

@@ -127,7 +127,7 @@ export default {
       }
     },
     addCard() {
-      if (this.itemsLoaded) {
+      if (this.isLoaded) {
         if (this.editorInput !== '') {
           this.$store.dispatch(pathto(ITEM_CREATE), {
             header: this.editorInput,

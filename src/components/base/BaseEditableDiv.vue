@@ -1,9 +1,10 @@
 <template>
   <div
     ref="editable"
-    contenteditable="true"
+    :contenteditable="!lock"
     v-on="allListeners"
     :data-placeholder="placeholder"
+    :class="lock ? 'locked' : ''"
   />
 </template>
 
@@ -22,6 +23,10 @@ export default {
     placeholder: {
       type: String,
       default: '',
+    },
+    lock: {
+      type: Boolean,
+      default: false,
     },
   },
   watch: {
@@ -48,7 +53,7 @@ export default {
 </script>
 
 <style scoped>
-[contentEditable=true]:empty:before {
+div:empty:before {
   content: attr(data-placeholder);
   color: grey;
   font-style: italic;
