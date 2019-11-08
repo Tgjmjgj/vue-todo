@@ -3,7 +3,8 @@ import Vuex from 'vuex';
 import VuexEasyFirestore from 'vuex-easy-firestore';
 
 import { Firebase, initFirebase } from '@/config/firebase';
-import firestoreModule from '@/store/modules/todoListModule/firestoreModule';
+import { MODULE_NAME } from './names';
+import firestoreModule from './modules/todoListModule/firestoreModule';
 
 Vue.use(Vuex);
 
@@ -16,17 +17,22 @@ const store = new Vuex.Store({
   plugins: [
     easyFirestore,
   ],
+  modules: {},
   state: {
     loading: null,
   },
   mutations: {},
   actions: {},
-  modules: {},
+  getters: {
+    dataLoaded(state) {
+      return state.loading;
+    },
+  },
 });
 
 // Load all data from Firestore to the local Vuex store and activate synchronization
 store.state.loading = initFirebase()
-  .then(() => store.dispatch('todoList/openDBChannel'))
+  .then(() => store.dispatch(`${MODULE_NAME}/openDBChannel`))
   .catch(err => console.log(`Cannot initialize Firebase! Error: ${err}`));
 
 export default store;

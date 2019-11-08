@@ -34,6 +34,11 @@
 </template>
 
 <script>
+import {
+  pathto,
+  ITEM_UPDATE,
+} from '@/store/names';
+
 export default {
   name: 'todo-list-rich-editor',
   data() {
@@ -44,7 +49,7 @@ export default {
   },
   computed: {
     items() {
-      return this.$store.getters['todoList/items'];
+      return this.$store.getters[pathto('items')];
     },
   },
   methods: {
@@ -54,7 +59,7 @@ export default {
         header: this.header,
         content: this.content,
       };
-      this.$store.dispatch('todoList/updateItem', updItem);
+      this.$store.dispatch(pathto(ITEM_UPDATE), updItem);
       this.$emit('leave');
     },
     cancel() {
@@ -62,7 +67,7 @@ export default {
     },
   },
   mounted() {
-    this.$store.state.loading.then(() => {
+    this.$store.getters.dataLoaded.then(() => {
       const itemId = this.$route.params.id;
       const potentialItem = this.items.find(item => item.id === itemId);
       if (potentialItem) {

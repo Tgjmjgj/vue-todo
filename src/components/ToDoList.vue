@@ -54,6 +54,12 @@
 <script>
 import ToDoListItem from '@/components/ToDoListItem.vue';
 import ToDoListEditor from '@/components/ToDoListEditor.vue';
+import {
+  pathto,
+  ITEM_CREATE,
+  ITEM_UPDATE,
+  ITEM_DELETE,
+} from '@/store/names';
 
 export default {
   name: 'todo-list',
@@ -71,7 +77,7 @@ export default {
     },
   },
   mounted() {
-    this.$store.state.loading.then(() => {
+    this.$store.getters.dataLoaded.then(() => {
       // Should executes after full list have rendered in the component
       const n = parseInt(this.$route.params.n, 10);
       if (Number.isInteger(n) && n > 0 && n <= this.$refs.paginator.lastPage) {
@@ -83,7 +89,7 @@ export default {
   },
   computed: {
     items() {
-      return this.$store.getters['todoList/items'];
+      return this.$store.getters[pathto('items')];
     },
   },
   methods: {
@@ -102,7 +108,7 @@ export default {
     },
     addCard() {
       if (this.editorInput !== '') {
-        this.$store.dispatch('todoList/createItem', {
+        this.$store.dispatch(pathto(ITEM_CREATE), {
           header: this.editorInput,
           content: '{empty}',
         });
@@ -113,10 +119,10 @@ export default {
     changeCardStatus(item) {
       const updItem = { ...item };
       updItem.completionTime = (item.completionTime ? null : new Date());
-      this.$store.dispatch('todoList/updateItem', updItem);
+      this.$store.dispatch(pathto(ITEM_UPDATE), updItem);
     },
     deleteCard(itemId) {
-      this.$store.dispatch('todoList/deleteItem', itemId);
+      this.$store.dispatch(pathto(ITEM_DELETE), itemId);
     },
     editCard(itemId) {
       this.$router.push({ path: `/edit/${itemId}` });

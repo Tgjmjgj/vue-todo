@@ -1,7 +1,7 @@
 
 /*
 state.data type is {
-  [id: string]: FirestoreListItem;
+  [id: string]: JsListItem;
 }
 FirestoreListItem -> see /src/util/listItemUtils.js
 */
@@ -10,6 +10,12 @@ import { collectionName } from '@/config/firebase';
 import items from './getters';
 import * as mutations from './mutations';
 import * as actions from './actions';
+import {
+  ITEM_CREATE,
+  ITEM_UPDATE,
+  ITEM_DELETE,
+  MODULE_NAME,
+} from '@/store/names';
 
 const defaultFilter = [
   ['deleted', '==', false],
@@ -18,7 +24,7 @@ const defaultFilter = [
 const firestoreModule = {
   firestorePath: collectionName,
   firestoreRefType: 'collection',
-  moduleName: 'todoList',
+  moduleName: MODULE_NAME,
   statePropName: 'data',
   namespaced: true,
   sync: {
@@ -36,14 +42,14 @@ const firestoreModule = {
     items,
   },
   mutations: {
-    insert: mutations.insert,
-    patch: mutations.patch,
-    markAsDeleted: mutations.markAsDeleted,
+    [ITEM_CREATE]: mutations.insert,
+    [ITEM_UPDATE]: mutations.patch,
+    [ITEM_DELETE]: mutations.markAsDeleted,
   },
   actions: {
-    createItem: actions.createItem,
-    updateItem: actions.updateItem,
-    deleteItem: actions.deleteItem,
+    [ITEM_CREATE]: actions.createItem,
+    [ITEM_UPDATE]: actions.updateItem,
+    [ITEM_DELETE]: actions.deleteItem,
   },
 };
 
