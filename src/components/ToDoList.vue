@@ -35,7 +35,7 @@
             :key="item.id"
             class=" green"
           >
-            <v-list-item-content class="px-0 py-2">
+            <v-list-item-content class="px-0 py-0">
               <todo-list-item
                 :number="itemIndex(indexOnPage)"
                 :currentState="item.completionTime ? 'completed' : 'waiting'"
@@ -172,3 +172,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.rounded {
+  border-radius: 32px;
+}
+</style>
