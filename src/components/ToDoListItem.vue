@@ -1,15 +1,13 @@
 <template>
   <v-container class="pa-0 ma-0">
     <v-row class="pa-0 ma-0 flex-nowrap list-item">
-      <v-col cols="1" class="pa-0 text-center white">
+      <div class="pa-0 text-center white" style="flex: 0 0 8.33%">
         <span v-if="number" class="num"> {{ number }} </span>
-      </v-col>
-      <v-col cols="8" class="pa-0 white">
-        <div class="text-truncate">
-          <slot></slot>
-        </div>
-      </v-col>
-      <v-col cols="2" class="pa-0 btn-cont white">
+      </div>
+      <div class="pa-0 white text-truncate" style="flex-growth: auto; flex-basis: 100%">
+        <slot></slot>
+      </div>
+      <div class="pa-0 btn-cont white d-flex justify-start" style="flex-basis: 20%">
         <v-slide-x-reverse-transition>
           <div v-if="showButtons"
             class="transition-slow-in-fast-out d-flex flex-nowrap"
@@ -30,11 +28,11 @@
             </v-btn>
           </div>
         </v-slide-x-reverse-transition>
-      </v-col>
-      <v-col
-        cols="1"
+      </div>
+      <div
         class="pa-0 btn-cont white"
         :class="currentState"
+        style="flex-basis: 16.66%"
       >
         <v-btn
           text block tile
@@ -46,7 +44,7 @@
         >
           <v-icon> {{ stateIcon }} </v-icon>
         </v-btn>
-      </v-col>
+      </div>
     </v-row>
   </v-container>
 </template>

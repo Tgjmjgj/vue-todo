@@ -56,11 +56,10 @@
     </v-row>
     <v-row class="todo-list-control">
       <v-col cols="12" md="2" md-order="2" class="buttons">
-        <base-classic-button
+        <v-btn
           :class="isLoaded ? 'active' : 'blocked'"
           @click="addCard"
-          value="Add Card"
-        ></base-classic-button>
+        >Add Card</v-btn>
       </v-col>
       <v-col cols="12" md="10" md-order="1" class="text-center">
         <v-pagination
