@@ -2,10 +2,7 @@
   <v-container fluid style="background-color: #E0E3E6;" class="px-6">
     <v-row justify="center" class="todo-list-header">
       <v-col cols="12">
-        <base-header
-          :level="2"
-          value="So what we need to do?"
-        ></base-header>
+        <h2>So what we need to do?</h2>
       </v-col>
     </v-row>
     <v-row class="loader-cont" v-if="!isLoaded">
@@ -21,14 +18,16 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col>
+      <v-col class="pb-0">
         <todo-list-editor
+          ref="textField"
           v-model="editorInput"
+          @enter="addCard"
         ></todo-list-editor>
       </v-col>
     </v-row>
     <v-row>
-      <v-col>
+      <v-col class="pt-0">
         <v-list class="transparent">
           <v-list-item-group v-model="selected" color="blue">
             <v-list-item
@@ -55,13 +54,13 @@
       </v-col>
     </v-row>
     <v-row class="todo-list-control">
-      <v-col cols="12" md="2" md-order="2" class="buttons">
+      <v-col cols="12" md="2" md-order="2" class="d-flex align-center pt-0">
         <v-btn
           :class="isLoaded ? 'active' : 'blocked'"
           @click="addCard"
         >Add Card</v-btn>
       </v-col>
-      <v-col cols="12" md="10" md-order="1" class="text-center">
+      <v-col cols="12" md="10" md-order="1" class="text-center pt-0">
         <v-pagination
           v-model="currentPage"
           class="paginator"
@@ -156,12 +155,12 @@ export default {
     },
     addCard() {
       if (this.isLoaded) {
-        if (this.editorInput !== '') {
+        if (this.$refs.textField.validate()) {
           this.$store.dispatch(pathto(ITEM_CREATE), {
             header: this.editorInput,
             content: '{empty}',
           });
-          this.editorInput = '';
+          this.$refs.textField.reset();
           // this.$refs.paginator.goToPage(1);
         }
       }
@@ -185,5 +184,12 @@ export default {
 .list-item {
   cursor: default;
   min-height: 0;
+}
+</style>
+
+<style lang="scss">
+.paginator button {
+  outline: none;
+  user-select: none;
 }
 </style>

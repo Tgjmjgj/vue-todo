@@ -1,11 +1,17 @@
 <template>
-  <base-editable-div
+  <v-text-field
+    ref="self"
+    outlined clearable
+    :label="label"
+    :placeholder="placeholder"
+    :hint="hint"
     :value="innerText"
     @input="onInput"
-    :placeholder="placeholder"
-    class="input"
-  >
-  </base-editable-div>
+    @blur="removeErrorOutline"
+    @click:clear="removeErrorOutline"
+    @keydown.enter="enter"
+    :rules="[() => !!innerText || 'Write something!']"
+  ></v-text-field>
 </template>
 
 <script>
@@ -21,9 +27,17 @@ export default {
     };
   },
   props: {
+    label: {
+      type: String,
+      default: 'New Item',
+    },
     placeholder: {
       type: String,
-      default: 'Enter a title for this card...',
+      default: 'What you need to do?',
+    },
+    hint: {
+      type: String,
+      default: 'Press Enter to add',
     },
     value: {
       type: String,
@@ -32,24 +46,35 @@ export default {
   },
   methods: {
     onInput(val) {
-      this.innerText = val;
       this.$emit('input', val);
+    },
+    validate() {
+      const isValid = this.$refs.self.validate(true);
+      if (!isValid) {
+        // Preserve red error outiline for 3 seconds
+        setTimeout(() => {
+          this.$refs.self.reset();
+        }, 3000);
+      }
+      return isValid;
+    },
+    reset() {
+      this.$refs.self.reset();
+    },
+    removeErrorOutline() {
+      if (!this.innerText) {
+        this.$refs.self.reset();
+      }
+    },
+    enter() {
+      this.$emit('enter');
     },
   },
   watch: {
     value() {
-      // Maybe there is a better way than watcher to do this?
+      // to push outer v-model to inner v-model
       this.innerText = this.value;
     },
   },
 };
 </script>
-
-<style scoped>
-.input {
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 0 rgba(0,0,0,.5);
-  padding-bottom: 2em;
-}
-</style>

@@ -32,7 +32,7 @@
       <div
         class="pa-0 btn-cont white"
         :class="currentState"
-        style="flex-basis: 16.66%"
+        style="flex: 0 1 16.66%"
       >
         <v-btn
           text block tile
@@ -67,7 +67,6 @@ export default {
         return Object.keys(todoStates).indexOf(val) !== -1;
       },
     },
-    item: Object,
     showButtons: {
       type: Boolean,
       default: false,
@@ -75,13 +74,13 @@ export default {
   },
   methods: {
     clickEdit() {
-      this.$emit('click-edit');
+      this.$emit('click:edit');
     },
     clickDelete() {
-      this.$emit('click-delete');
+      this.$emit('click:delete');
     },
     clickState() {
-      this.$emit('click-state');
+      this.$emit('click:state');
     },
   },
   computed: {
