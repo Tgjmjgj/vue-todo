@@ -1,30 +1,44 @@
 <template>
-  <li ref="refItem" class="item">
-    <div class="main">
-      <span v-if="number" class="num"> {{ number }} </span>
-      <div class="content">
-        <slot></slot>
-      </div>
-      <base-icon-button
-        class="icon-btn"
-        icon="pen"
-        @click="clickEdit"
-      ></base-icon-button>
-      <base-icon-button
-        class="icon-btn"
-        icon="times"
-        @click="clickDelete"
-      ></base-icon-button>
-    </div>
-    <div class="append">
-      <base-icon-button
-        class="icon-btn"
-        :class="currentState"
-        :icon="stateIcon"
-        @click="clickState"
-      ></base-icon-button>
-    </div>
-  </li>
+  <v-container class="pa-0">
+    <v-row class="pa-0">
+      <v-col cols="1">
+        <span v-if="number" class="num"> {{ number }} </span>
+      </v-col>
+      <v-col cols="8">
+        <div class="text-truncate">
+          <slot></slot>
+        </div>
+      </v-col>
+      <v-col cols="1">
+        <v-btn
+          text icon
+          color="black"
+          @click="clickEdit"
+        >
+          <v-icon>mdi-star</v-icon>
+        </v-btn>
+      </v-col>
+      <v-col cols="1">
+        <v-btn
+          text icon
+          color="black"
+          @click="clickDelete"
+        >
+          <v-icon>mdi-heart</v-icon>
+        </v-btn>
+      </v-col>
+      <v-col cols="1">
+        <v-btn
+          text icon
+          color="pink"
+          @click="clickState"
+          :class="currentState"
+        >
+          <v-icon>mdi-thumb-up</v-icon>
+        </v-btn>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -68,47 +82,6 @@ export default {
 
 <style scoped>
 
-.item {
-  box-sizing: border-box;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #fff;
-  box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.5);
-  border-radius: 8px;
-}
-.item:hover {
-  background: #f5f6f7;
-}
-.item > div {
-  display: flex;
-  height: 100%;
-}
-.main {
-  flex: 1;
-}
-.append {
-  width: 60px;
-}
-.num {
-  display: inline-block;
-  width: 20px;
-}
-.content {
-  display: block;
-  text-align: center;
-  flex: 1;
-}
-.icon-btn {
-  height: 1em;
-  width: 1em;
-}
-.main .icon-btn {
-  visibility: hidden;
-}
-.main:hover .icon-btn {
-  visibility: visible;
-}
 .waiting {
   background: #c3c3c3;
 }

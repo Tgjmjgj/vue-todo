@@ -1,63 +1,75 @@
 <template>
-  <div class="todo-list">
-    <div class="todo-list-header">
-      <base-header
-        :level="2"
-        value="So what we need to do?"
-      >
-      </base-header>
-    </div>
-    <div class="loader-cont" v-if="!isLoaded">
-      <bar-loader
-        class="loader"
-        :loading="true"
-        color="#7B3E19"
-        :width="140"
-        :height="10"
-        sizeUnit="px"
-      ></bar-loader>
-    </div>
-    <div class="todo-list-main" v-else>
-      <todo-list-editor v-model="editorInput"></todo-list-editor>
-      <paginate
-        ref="paginator"
-        name="items"
-        :list="items"
-        :per="limit"
-        :refreshCurrentPage="true"
-      >
-        <todo-list-item
-          v-for="(item, indexOnPage) in paginated('items')"
-          :key="item.id"
-          :number="itemIndex(indexOnPage)"
-          :currentState="item.completionTime ? 'completed' : 'waiting'"
-          @click-edit="editCard(item.id)"
-          @click-delete="deleteCard(item.id)"
-          @click-state="changeCardStatus(item)"
-          class="row"
-        >
-          <base-text :value="item.header"></base-text>
-        </todo-list-item>
-      </paginate>
-    </div>
-    <div class="todo-list-control">
-      <paginate-links
-        v-if="isLoaded"
-        for="items"
-        :limit="6"
-        :show-step-links="true"
-        @change="onPageChange"
-      ></paginate-links>
-      <div class="buttons">
+  <v-container fluid class="yellow px-6">
+    <v-row justify="center" class="todo-list-header">
+      <v-col cols="12">
+        <base-header
+          :level="2"
+          value="So what we need to do?"
+        ></base-header>
+      </v-col>
+    </v-row>
+    <v-row class="loader-cont" v-if="!isLoaded">
+      <v-col>
+        <bar-loader
+          class="loader"
+          :loading="true"
+          color="#7B3E19"
+          :width="140"
+          :height="10"
+          sizeUnit="px"
+        ></bar-loader>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <todo-list-editor
+          v-model="editorInput"
+        ></todo-list-editor>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <v-list rounded>
+          <v-list-item
+            v-for="(item, indexOnPage) in pageItems"
+            :key="item.id"
+            class=" green"
+          >
+            <v-list-item-content class="px-0 py-2">
+              <todo-list-item
+                :number="itemIndex(indexOnPage)"
+                :currentState="item.completionTime ? 'completed' : 'waiting'"
+                @click-edit="editCard(item.id)"
+                @click-delete="deleteCard(item.id)"
+                @click-state="changeCardStatus(item)"
+                class="purple"
+              >
+                <span> {{ item.header }} </span>
+              </todo-list-item>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-col>
+    </v-row>
+    <v-row class="todo-list-control">
+      <v-col cols="12" md="2" md-order="2" class="buttons">
         <base-classic-button
           :class="isLoaded ? 'active' : 'blocked'"
           @click="addCard"
           value="Add Card"
-        >
-        </base-classic-button>
-      </div>
-    </div>
-  </div>
+        ></base-classic-button>
+      </v-col>
+      <v-col cols="12" md="10" md-order="1" class="text-center">
+        <v-pagination
+          v-model="currentPage"
+          class="paginator"
+          :length="total"
+          :total-visible="5"
+          @input="onPageChange"
+        ></v-pagination>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -81,7 +93,7 @@ export default {
   },
   data() {
     return {
-      paginate: ['items'],
+      currentPage: 1, // from 1, not 0 ! That's how v-pagination works
       editorInput: '',
     };
   },
@@ -96,12 +108,12 @@ export default {
       .then(() => this.$store.dispatch('waitItemsLoading'))
       .then(() => {
         // Should executes after full list have rendered in the component
-        const n = parseInt(this.$route.params.n, 10);
-        if (Number.isInteger(n) && n > 0 && n <= this.$refs.paginator.lastPage) {
-          this.$refs.paginator.goToPage(n);
-        } else {
-          this.$refs.paginator.goToPage(1);
-        }
+        // const n = parseInt(this.$route.params.n, 10);
+        // if (Number.isInteger(n) && n > 0 && n <= this.$refs.paginator.lastPage) {
+        //   this.$refs.paginator.goToPage(n);
+        // } else {
+        //   this.$refs.paginator.goToPage(1);
+        // }
       });
   },
   computed: {
@@ -111,10 +123,16 @@ export default {
     isLoaded() {
       return this.$store.getters.isLoaded;
     },
+    pageItems() {
+      return this.items.slice((this.currentPage - 1) * this.limit, this.currentPage * this.limit);
+    },
+    total() {
+      return Math.ceil(this.items.length / this.limit);
+    },
   },
   methods: {
     itemIndex(indexOnPage) {
-      return this.$refs.paginator.currentPage * this.limit + indexOnPage + 1;
+      return (this.currentPage - 1) * this.limit + indexOnPage + 1;
     },
     recieveInput(val) {
       this.editorInput = val;
@@ -125,6 +143,8 @@ export default {
         // sometime potentially unnecessary action?
         this.$router.replace({ path: newPath });
       }
+      const pag = this.$el.querySelector('.paginator');
+      this.$vuetify.goTo(pag);
     },
     addCard() {
       if (this.isLoaded) {
@@ -134,7 +154,7 @@ export default {
             content: '{empty}',
           });
           this.editorInput = '';
-          this.$refs.paginator.goToPage(1);
+          // this.$refs.paginator.goToPage(1);
         }
       }
     },
@@ -152,70 +172,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.row {
-  height: 2.5em;
-  margin: .6em 0;
-}
-.loader-cont {
-  height: 20em;
-  display: flex;
-  justify-content: center;
-}
-.loader {
-  margin-top: 6em;
-}
-.todo-list-control {
-  display: flex;
-  flex-flow: column;
-}
-.todo-list-control > .buttons {
-  display: flex;
-  justify-content: flex-start;
-}
-.active {
-  cursor: pointer;
-  background-color: #F5CE67;
-  transition: background-color 1s ease-out;
-}
-.blocked {
-  cursor: default;
-  background-color: #d6d5d1;
-  transition: background-color 1s ease-out;
-}
-</style>
-
-<style>
-.paginate-links.items {
-  list-style-type: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-ul.paginate-links > li {
-  display: block;
-  user-select: none;
-  cursor: pointer;
-  background: #fff;
-  margin: 0.2em;
-  box-shadow: 0 1px 2px #666;
-}
-ul.paginate-links > li.active {
-  background: #ff56;
-}
-ul.paginate-links > li:first-child {
-  border-radius: 8px 0 0 8px;
-  box-shadow: 2px 1px 2px #666;
-}
-ul.paginate-links > li:last-child {
-  border-radius: 0 8px 8px 0;
-  box-shadow: -2px 1px 2px #666;
-}
-ul.paginate-links a {
-  display: block;
-  height: 2em;
-  width: 2em;
-  line-height: 2em;
-}
-</style>

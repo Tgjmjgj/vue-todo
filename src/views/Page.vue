@@ -1,7 +1,5 @@
 <template>
-  <div class="box">
-    <to-do-list class="todo-list"></to-do-list>
-  </div>
+  <to-do-list class="todo-list"></to-do-list>
 </template>
 
 <script>
@@ -14,31 +12,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.box {
-  display: flex;
-  justify-content: center;
-}
-
-.todo-list {
-  box-sizing: border-box;
-  width: 800px;
-  background: #e0e3e6;
-  margin: 6em .75em .75em .75em;
-  border-radius: 8px;
-  padding: 1em;
-}
-
-@media (max-width: 1000px) {
-  .todo-list {
-    width: 80%;
-  }
-}
-
-@media (max-width: 700px) {
-  .todo-list {
-    width: calc(700px * 0.8);
-  }
-}
-</style>
