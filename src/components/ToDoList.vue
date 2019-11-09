@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="yellow px-6">
+  <v-container fluid style="background-color: #E0E3E6;" class="px-6">
     <v-row justify="center" class="todo-list-header">
       <v-col cols="12">
         <base-header
@@ -29,25 +29,28 @@
     </v-row>
     <v-row>
       <v-col>
-        <v-list rounded>
-          <v-list-item
-            v-for="(item, indexOnPage) in pageItems"
-            :key="item.id"
-            class=" green"
-          >
-            <v-list-item-content class="px-0 py-0">
-              <todo-list-item
-                :number="itemIndex(indexOnPage)"
-                :currentState="item.completionTime ? 'completed' : 'waiting'"
-                @click-edit="editCard(item.id)"
-                @click-delete="deleteCard(item.id)"
-                @click-state="changeCardStatus(item)"
-                class="purple"
-              >
-                <span> {{ item.header }} </span>
-              </todo-list-item>
-            </v-list-item-content>
-          </v-list-item>
+        <v-list class="transparent">
+          <v-list-item-group v-model="selected" color="blue">
+            <v-list-item
+              v-for="(item, indexOnPage) in pageItems"
+              :key="item.id"
+              class="list-item my-2 pa-0"
+            >
+              <v-hover #default="{ hover }">
+                <v-list-item-content class="pa-0">
+                    <todo-list-item
+                      :number="itemIndex(indexOnPage)"
+                      :currentState="item.completionTime ? 'completed' : 'waiting'"
+                      :showButtons="hover || (selected === indexOnPage)"
+                      @click-state="changeCardStatus(item)"
+                    >
+                      <span> {{ item.header }} </span>
+                    </todo-list-item>
+                  <v-divider></v-divider>
+                </v-list-item-content>
+              </v-hover>
+            </v-list-item>
+          </v-list-item-group>
         </v-list>
       </v-col>
     </v-row>
@@ -95,7 +98,13 @@ export default {
     return {
       currentPage: 1, // from 1, not 0 ! That's how v-pagination works
       editorInput: '',
+      selected: null,
     };
+  },
+  watch: {
+    selected() {
+      console.log(this.selected);
+    },
   },
   props: {
     limit: {
@@ -174,7 +183,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.rounded {
-  border-radius: 32px;
+.list-item {
+  cursor: default;
+  min-height: 0;
 }
 </style>
