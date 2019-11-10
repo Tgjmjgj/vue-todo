@@ -30,12 +30,12 @@
 </template>
 
 <script>
-import searchlight from '@/components/additional/searchlight.vue';
+import Searchlight from '@/components/additional/Searchlight.vue';
 
 export default {
   name: 'page-not-found',
   components: {
-    searchlight,
+    searchlight: Searchlight,
   },
 };
 </script>

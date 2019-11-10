@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid style="background-color: #E0E3E6;" class="px-6">
+  <v-container fluid>
     <v-row>
       <v-col class="pb-0">
         <todo-list-editor
@@ -22,7 +22,7 @@
     </v-row>
     <v-row v-else>
       <v-col class="pt-0">
-        <v-list class="transparent">
+        <v-list class="transparent pt-0">
           <v-list-item-group v-model="selectedId" color="blue">
             <v-list-item
               v-for="(item, indexOnPage) in pageItems"
@@ -51,15 +51,14 @@
       </v-col>
     </v-row>
     <v-row class="todo-list-control">
-      <v-col cols="12" md="2" md-order="2" class="d-flex align-center pt-0">
+      <v-col cols="12" md="2" md-order="2" class="d-flex align-center py-0">
         <v-btn
           :disabled="!isLoaded"
-          :class="isLoaded ? 'active' : 'blocked'"
           @click="addCard"
           color="primary"
         >Add Card</v-btn>
       </v-col>
-      <v-col cols="12" md="10" md-order="1" class="text-center pt-0">
+      <v-col cols="12" md="10" md-order="1" class="text-center py-0">
         <v-pagination
           :disabled="!isLoaded"
           v-model="currentPage"
@@ -74,8 +73,8 @@
 </template>
 
 <script>
-import ToDoListItem from '@/components/ToDoListItem.vue';
-import ToDoListEditor from '@/components/ToDoListEditor.vue';
+import ToDoListItem from '@/components/todo/ToDoListItem.vue';
+import ToDoListEditor from '@/components/todo/ToDoListEditor.vue';
 import {
   pathto,
   ITEM_CREATE,

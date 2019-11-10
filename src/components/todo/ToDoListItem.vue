@@ -19,13 +19,15 @@
             >
               <v-icon>mdi-pencil</v-icon>
             </v-btn>
-            <v-btn
-              text icon
-              color="black"
-              @click="clickDelete"
-            >
-              <v-icon>mdi-delete</v-icon>
-            </v-btn>
+            <v-hover #default="{ hover }">
+              <v-btn
+                text icon
+                :color="hover ? 'red darken-3' : 'black'"
+                @click="clickDelete"
+              >
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </v-hover>
           </div>
         </v-slide-x-reverse-transition>
       </div>

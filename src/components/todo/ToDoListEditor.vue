@@ -2,6 +2,7 @@
   <v-text-field
     ref="self"
     outlined clearable
+    background-color="white"
     :label="label"
     :placeholder="placeholder"
     :hint="hint"
