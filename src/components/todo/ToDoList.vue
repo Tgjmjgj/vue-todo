@@ -22,6 +22,12 @@
     </v-row>
     <v-row v-else>
       <v-col class="pt-0">
+        <yes-no-dialog
+          ref="delDialog"
+          @click:yes="deleteCard"
+          caption="Confirm"
+          text="Do you confirm the deletion of this Item?"
+        ></yes-no-dialog>
         <v-list class="transparent pt-0">
           <v-list-item-group v-model="selectedId" color="blue">
             <v-list-item
@@ -37,7 +43,7 @@
                       :currentState="item.completionTime ? 'completed' : 'waiting'"
                       :showButtons="hover || (selectedId === item.id)"
                       @click:edit="editCard(item.id)"
-                      @click:delete="deleteCard(item.id)"
+                      @click:delete="askToDelete(item.id)"
                       @click:state="changeCardStatus(item)"
                     >
                       <span> {{ item.header }} </span>
@@ -75,6 +81,8 @@
 <script>
 import ToDoListItem from '@/components/todo/ToDoListItem.vue';
 import ToDoListEditor from '@/components/todo/ToDoListEditor.vue';
+import YesNoDialog from '@/components/general/YesNoDialog.vue';
+
 import {
   pathto,
   ITEM_CREATE,
@@ -91,6 +99,7 @@ export default {
   components: {
     'todo-list-editor': ToDoListEditor,
     'todo-list-item': ToDoListItem,
+    'yes-no-dialog': YesNoDialog,
   },
   data() {
     return {
@@ -165,6 +174,9 @@ export default {
       const updItem = { ...item };
       updItem.completionTime = (item.completionTime ? null : new Date());
       this.$store.dispatch(pathto(ITEM_UPDATE), updItem);
+    },
+    askToDelete(itemId) {
+      this.$refs.delDialog.showDialog(itemId);
     },
     deleteCard(itemId) {
       this.$store.dispatch(pathto(ITEM_DELETE), itemId);

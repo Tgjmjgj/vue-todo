@@ -7,6 +7,13 @@
             <v-toolbar-title class="pl-5 no-select">
               Log In
             </v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-btn text
+              icon color="white"
+              to="/"
+            >
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
           </template>
           <template #body>
             <v-container fluid class="body">
