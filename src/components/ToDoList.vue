@@ -1,38 +1,33 @@
 <template>
   <v-container fluid style="background-color: #E0E3E6;" class="px-6">
-    <v-row justify="center" class="todo-list-header">
-      <v-col cols="12">
-        <h2>So what we need to do?</h2>
-      </v-col>
-    </v-row>
-    <v-row class="loader-cont" v-if="!isLoaded">
-      <v-col>
-        <bar-loader
-          class="loader"
-          :loading="true"
-          color="#7B3E19"
-          :width="140"
-          :height="10"
-          sizeUnit="px"
-        ></bar-loader>
-      </v-col>
-    </v-row>
     <v-row>
       <v-col class="pb-0">
         <todo-list-editor
+          :disabled="!isLoaded"
           ref="textField"
           v-model="editorInput"
           @enter="addCard"
         ></todo-list-editor>
       </v-col>
     </v-row>
-    <v-row>
+    <v-row class="loader-cont" v-if="!isLoaded">
+      <v-col cols="12" class="text-center pt-4 pb-12">
+        <v-progress-circular
+          :size="70"
+          :width="7"
+          color="primary"
+          indeterminate
+        ></v-progress-circular>
+      </v-col>
+    </v-row>
+    <v-row v-else>
       <v-col class="pt-0">
         <v-list class="transparent">
-          <v-list-item-group v-model="selected" color="blue">
+          <v-list-item-group v-model="selectedId" color="blue">
             <v-list-item
               v-for="(item, indexOnPage) in pageItems"
               :key="item.id"
+              :value="item.id"
               class="list-item my-2 pa-0"
             >
               <v-hover #default="{ hover }">
@@ -40,8 +35,10 @@
                     <todo-list-item
                       :number="itemIndex(indexOnPage)"
                       :currentState="item.completionTime ? 'completed' : 'waiting'"
-                      :showButtons="hover || (selected === indexOnPage)"
-                      @click-state="changeCardStatus(item)"
+                      :showButtons="hover || (selectedId === item.id)"
+                      @click:edit="editCard(item.id)"
+                      @click:delete="deleteCard(item.id)"
+                      @click:state="changeCardStatus(item)"
                     >
                       <span> {{ item.header }} </span>
                     </todo-list-item>
@@ -56,12 +53,15 @@
     <v-row class="todo-list-control">
       <v-col cols="12" md="2" md-order="2" class="d-flex align-center pt-0">
         <v-btn
+          :disabled="!isLoaded"
           :class="isLoaded ? 'active' : 'blocked'"
           @click="addCard"
+          color="primary"
         >Add Card</v-btn>
       </v-col>
       <v-col cols="12" md="10" md-order="1" class="text-center pt-0">
         <v-pagination
+          :disabled="!isLoaded"
           v-model="currentPage"
           class="paginator"
           :length="total"
@@ -74,7 +74,6 @@
 </template>
 
 <script>
-import { BarLoader } from '@saeris/vue-spinners';
 import ToDoListItem from '@/components/ToDoListItem.vue';
 import ToDoListEditor from '@/components/ToDoListEditor.vue';
 import {
@@ -85,10 +84,12 @@ import {
 } from '@/store/names';
 import throttleIf from '@/util/dev/throttle';
 
+// Return or not to the 1st page on item adding
+const returnToNewItem = true;
+
 export default {
   name: 'todo-list',
   components: {
-    'bar-loader': BarLoader,
     'todo-list-editor': ToDoListEditor,
     'todo-list-item': ToDoListItem,
   },
@@ -96,13 +97,8 @@ export default {
     return {
       currentPage: 1, // from 1, not 0 ! That's how v-pagination works
       editorInput: '',
-      selected: null,
+      selectedId: '',
     };
-  },
-  watch: {
-    selected() {
-      console.log(this.selected);
-    },
   },
   props: {
     limit: {
@@ -115,12 +111,10 @@ export default {
       .then(() => this.$store.dispatch('waitItemsLoading'))
       .then(() => {
         // Should executes after full list have rendered in the component
-        // const n = parseInt(this.$route.params.n, 10);
-        // if (Number.isInteger(n) && n > 0 && n <= this.$refs.paginator.lastPage) {
-        //   this.$refs.paginator.goToPage(n);
-        // } else {
-        //   this.$refs.paginator.goToPage(1);
-        // }
+        const n = parseInt(this.$route.params.n, 10);
+        if (Number.isInteger(n) && n > 0 && n <= this.total) {
+          this.currentPage = n;
+        }
       });
   },
   computed: {
@@ -149,6 +143,7 @@ export default {
       if (newPath !== this.$route.path) {
         // sometime potentially unnecessary action?
         this.$router.replace({ path: newPath });
+        this.selected = null;
       }
       const pag = this.$el.querySelector('.paginator');
       this.$vuetify.goTo(pag);
@@ -161,7 +156,9 @@ export default {
             content: '{empty}',
           });
           this.$refs.textField.reset();
-          // this.$refs.paginator.goToPage(1);
+          if (returnToNewItem) {
+            this.currentPage = 1;
+          }
         }
       }
     },

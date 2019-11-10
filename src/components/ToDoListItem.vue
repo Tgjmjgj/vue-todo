@@ -32,7 +32,7 @@
       <div
         class="pa-0 btn-cont white"
         :class="currentState"
-        style="flex: 0 1 16.66%"
+        style="flex: 0 0 18.33%; max-width: 100px"
       >
         <v-btn
           text block tile

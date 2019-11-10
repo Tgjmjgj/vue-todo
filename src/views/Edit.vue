@@ -1,10 +1,20 @@
 <template>
-  <div class="box">
-    <todo-list-rich-editor
-      class="editor"
-      @leave="getOut"
-    ></todo-list-rich-editor>
-  </div>
+  <v-card flat tile>
+    <v-toolbar flat color="primary" class="white--text">
+      <v-btn icon class="hidden-xs-only" @click="getOut">
+        <v-icon>mdi-arrow-left</v-icon>
+      </v-btn>
+      <v-toolbar-title class="pl-5">Edit Card</v-toolbar-title>
+    </v-toolbar>
+    <v-card-text class="pa-0">
+      <div class="box">
+        <todo-list-rich-editor
+          class="editor"
+          @leave="getOut"
+        ></todo-list-rich-editor>
+      </div>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>

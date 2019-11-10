@@ -6,6 +6,7 @@
     :placeholder="placeholder"
     :hint="hint"
     :value="innerText"
+    :disabled="disabled"
     @input="onInput"
     @blur="removeErrorOutline"
     @click:clear="removeErrorOutline"
@@ -42,6 +43,10 @@ export default {
     value: {
       type: String,
       default: '',
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
   },
   methods: {
