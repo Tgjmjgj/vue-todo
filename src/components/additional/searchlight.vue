@@ -19,6 +19,9 @@ export default {
   mounted() {
     document.addEventListener('mousemove', this.move);
   },
+  beforeDestroy() {
+    document.removeEventListener('mousemove', this.move);
+  },
 };
 </script>
 
@@ -28,7 +31,7 @@ export default {
   top: 0;
   left: 0;
   overflow: hidden;
-  height: 100vh;
+  height: 100%;
   width: 100vw;
   cursor: none;
 }

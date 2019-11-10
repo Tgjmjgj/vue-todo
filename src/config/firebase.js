@@ -14,7 +14,8 @@ const firebaseConfig = {
   measurementId: 'G-75TXZBWGTW',
 };
 
-function initFirebase() {
+function configureFirebase() {
+  console.log('Firebase Initialization...');
   Firebase.initializeApp(firebaseConfig);
   return new Promise((resolve, reject) => {
     Firebase.firestore().enablePersistence({ synchronizeTabs: true })
@@ -29,4 +30,6 @@ function initFirebase() {
   });
 }
 
-export { Firebase, collectionName, initFirebase };
+const firebaseInit = configureFirebase();
+
+export { collectionName, firebaseInit };

@@ -16,6 +16,7 @@
     "@saeris/vue-spinners": "^1.0.8",
     "core-js": "^3.3.2",
     "firebase": "^7.2.3",
+    "firebaseui": "^4.2.0",
     "vue": "^2.6.10",
     "vue-paginate": "^3.6.0",
     "vue-router": "^3.1.3",

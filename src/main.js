@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import '@/config/firebase';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faUserSecret,

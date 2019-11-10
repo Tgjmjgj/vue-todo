@@ -1,5 +1,5 @@
 <template>
-  <v-container class="out-cont">
+  <v-container fluid class="out-cont fill-height">
     <v-container>
       <v-row>
         <v-col cols="12" class="text-center">
@@ -45,7 +45,6 @@ $sm: 600px;
 $md: 960px;
 
 .out-cont {
-  height: 80vh;
   display: flex;
   flex-flow: column;
   justify-content: center;
@@ -73,6 +72,7 @@ h2 {
 @media (min-width: $md) {
   h1 {
     font-size: 10rem;
+    margin-top: -100px;
   }
   h2 {
     font-size: 4rem;
