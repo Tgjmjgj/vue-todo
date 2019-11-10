@@ -9,7 +9,7 @@
             </v-toolbar-title>
           </template>
           <template #body>
-            <v-container fluid>
+            <v-container fluid class="body">
               <v-row>
                 <v-col class="no-select">
                   <h2>Choose:</h2>
@@ -59,10 +59,33 @@ export default {
       signInFlow: 'popup',
       signInSuccessUrl: '/#/page/1',
       signInOptions: [
-        Firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-        Firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-        Firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+        {
+          provider: Firebase.auth.EmailAuthProvider.PROVIDER_ID,
+          requireDisplayName: false,
+        },
         Firebase.auth.GithubAuthProvider.PROVIDER_ID,
+        {
+          provider: Firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+          scopes: [
+            'https://www.googleapis.com/auth/contacts.readonly',
+          ],
+          customParameters: {
+            prompt: 'select_account',
+          },
+        },
+        {
+          provider: Firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+          scopes: [
+            'public_profile',
+            'email',
+            'user_likes',
+            'user_friends',
+          ],
+          customParameters: {
+            auth_type: 'reauthenticate',
+          },
+        },
+        Firebase.auth.TwitterAuthProvider.PROVIDER_ID,
       ],
     });
   },
@@ -72,6 +95,10 @@ export default {
 <style lang="scss" scoped>
 .box {
   width: auto;
+}
+.body {
+  margin: 0 -12px -12px -12px;
+  background: white;
 }
 #firebase-auth {
   width: 220px;
