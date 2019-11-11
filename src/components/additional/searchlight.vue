@@ -17,10 +17,10 @@ export default {
     },
   },
   mounted() {
-    document.addEventListener('mousemove', this.move);
+    document.addEventListener('pointermove', this.move);
   },
   beforeDestroy() {
-    document.removeEventListener('mousemove', this.move);
+    document.removeEventListener('pointermove', this.move);
   },
 };
 </script>
