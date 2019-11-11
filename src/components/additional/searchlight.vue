@@ -17,10 +17,12 @@ export default {
     },
   },
   mounted() {
+    document.body.style.touchAction = 'none';
     document.addEventListener('pointermove', this.move);
   },
   beforeDestroy() {
     document.removeEventListener('pointermove', this.move);
+    document.body.style.touchAction = null;
   },
 };
 </script>
